@@ -27,6 +27,12 @@
         src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"
+        integrity="sha256-HQCkPjsckBtmO60xeZs560g8/5v04DvOkyEo01zhSpo=" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/css/inputmask.min.css"
+        integrity="sha256-lIAsuaxpRGnhhPVyxcly6GdqAXS5E6POCZ3NnL0YphM=" crossorigin="anonymous" />
 </head>
 
 <body>
@@ -34,93 +40,87 @@
         <h1>Оформление заявки</h1>
     </nav>
     <br>
-    <div class="container-fluid">
+    <div class="container">
         <form class="form">
             <div class="card">
                 <div class="card-header">
                     <h2>Транспортное средство</h2>
                 </div>
                 <div class="card-body">
-                    <div class="form-group row">
-                        <label for="number" class="col-md-1">Гос. номер</label>
+
+                    <div class="form-row">
                         <div class="form-group col-md-6">
-                            <input type="text" class="form-control" id="number">
-                        </div>
-                        <div class="form-group col-md-3">
-                            <button class="btn btn-primary">Подгрузить</button>
+                            <label>Гос. номер</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary">Подгрузить</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label for="id_" class="col-md-1">ID</label>
-                        <div class="form-group col-md-3">
-                            <select class="custom-select" id="id_">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Идентификатор</label>
+                            <select class="custom-select" id="identifier">
                                 <option>VIN</option>
+                                <option>Номер кузова</option>
+                                <option>Номер рамы</option>
                             </select>
                         </div>
-                        <div class="form-group col-md-3">
-                            <input type="text" class="form-control" id="id_value">
-                        </div>
-                        <div class="form-group col-md-3">
-                            <button class="btn btn-primary">Подгрузить</button>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="power" class="col-md-1">Мощность, л.с.</label>
                         <div class="form-group col-md-6">
-                            <input type="text" class="form-control" id="power">
-                        </div>
-                        <div class="form-group col-md-5">
+                            <label id="identifier_label">VIN</label>
                             <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <label class="input-group-text" for="purpose">Цель</label>
+                                <input id="identifier_data" type="text" class="form-control">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary">Подгрузить</button>
                                 </div>
-                                <select class="custom-select" id="purpose">
-                                    <option selected>Личные</option>
-                                </select>
                             </div>
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label for="brand" class="col-md-1">Марка</label>
+                    <div class="form-row">
                         <div class="form-group col-md-6">
-                            <input type="text" class="form-control" id="brand">
+                            <label>Мощность</label>
+                            <input type="text" class="form-control">
                         </div>
-                        <div class="form-group col-md-5">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <label class="input-group-text" for="purpose">Модель</label>
-                                </div>
-
-                                <select class="custom-select">
-                                </select>
-
-                            </div>
+                        <div class="form-group col-md-6">
+                            <label>Цель</label>
+                            <select class="custom-select">
+                                <option>Личные</option>
+                            </select>
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label for="power" class="col-md-1">Год выпуска</label>
+                    <div class="form-row">
                         <div class="form-group col-md-6">
-                            <input type="text" class="form-control" id="power">
+                            <label>Марка</label>
+                            <input type="text" class="form-control">
                         </div>
-                        <div class="form-group col-md-5">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <label class="input-group-text" for="purpose">Используется</label>
-                                </div>
-                                <select class="custom-select" id="purpose">
-                                    <option selected>Без прицепа</option>
-                                    <option selected>С прицепом</option>
-                                </select>
-
-                            </div>
+                        <div class="form-group col-md-6">
+                            <label>Модель</label>
+                            <select class="custom-select">
+                            </select>
                         </div>
                     </div>
 
-                    <div class="custom-control custom-checkbox form-row form-check">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Год выпуска</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Используется</label>
+                            <select class="custom-select">
+                                <option>Без прицепа</option>
+                                <option>С прицепом</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="custom-control custom-checkbox form-check">
                         <input id="newTS" type="checkbox" class="custom-control-input">
                         <label class="custom-control-label" for="newTS">Новое ТС</label>
                     </div>
@@ -136,20 +136,299 @@
                     <h2>Дополнительные данные о ТС </h2>
                 </div>
                 <div class="card-body">
-                    <div class="form-group row">
+
+                    <div class="form-row">
                         <div class="form-group col-md-6">
-                            <div class="input-group">
-                                <select class="custom-select" id="document_type">
-                                    <option selected>ПТС</option>
-                                    <option selected>СРТС</option>
-                                </select>
-                                <label class="pl" for="document_type">Тип документа</label>
-                            </div>
+                            <label>Тип документа</label>
+                            <select class="custom-select">
+                                <option disabled selected>Тип документа</option>
+                                <option>ПТС</option>
+                                <option>СРТС</option>
+                            </select>
                         </div>
                         <div class="form-group col-md-6">
-                            <input type="text" name="date" placeholder="Дата выдачи">
+                            <label>Дата выдачи</label>
+                            <input type="text" class="form-control date">
                         </div>
                     </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Серия документа</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Номер документа</label>
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label>Номер ДК</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Дата выдачи ДК</label>
+                            <input type="text" class="form-control date">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Дата окончания ДК</label>
+                            <input type="text" class="form-control date">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <br>
+            <br>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>Страхователь</h2>
+                </div>
+                <div class="card-body">
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Фамилия</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Имя</label>
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label>Отчество</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Дата рождения</label>
+                            <input type="text" class="form-control date">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Пол</label>
+                            <br>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" name="gender" type="radio">
+                                <label class="form-check-label">Муж</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" name="gender" type="radio">
+                                <label class="form-check-label">Жен</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Город постоянной регистрации</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Улица</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control">
+                                <div class="input-group-append form-check-inline">
+                                    <input type="checkbox" style="margin-left: 5px">
+                                    <label class="form-check-label" style="margin-left: 2px">Отсутствует в
+                                        списке</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label>Номер дома</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Номер корпуса</label>
+                            <input type="text" class="form-control">
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label>Индекс</label>
+                            <input type="text" class="form-control">
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Номер квартиры</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Серия паспорта</label>
+                            <input type="text"  class="form-control">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Номер паспорта</label>
+                            <input type="text"  class="form-control">
+                        </div>
+                    </div>
+
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Дата выдачи паспорта</label>
+                            <input type="text" class="form-control date">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Кем выдан паспорт</label>
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Телефон</label>
+                            <input type="text" class="form-control" name="phone"
+                                data-inputmask="'mask': '+7 (999) 999 99 99'">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Электронная почта</label>
+                            <input type="email" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" name="gender" type="checkbox">
+                                <label class="form-check-label">Страхователь является собственником</label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <br>
+            <br>
+
+            <div class="card" id="owner_card">
+                <div class="card-header">
+                    <h2>Собственник</h2>
+                </div>
+                <div class="card-body">
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Фамилия</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Имя</label>
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label>Отчество</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Дата рождения</label>
+                            <input type="text"  class="form-control date">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Пол</label>
+                            <br>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" name="gender" type="radio">
+                                <label class="form-check-label">Муж</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" name="gender" type="radio">
+                                <label class="form-check-label">Жен</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Город постоянной регистрации</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Улица</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control">
+                                <div class="input-group-append form-check-inline">
+                                    <input type="checkbox" style="margin-left: 5px">
+                                    <label class="form-check-label" style="margin-left: 2px">Отсутствует в
+                                        списке</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label>Номер дома</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Номер корпуса</label>
+                            <input type="text" class="form-control">
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label>Индекс</label>
+                            <input type="text" class="form-control">
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Номер квартиры</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Серия паспорта</label>
+                            <input type="text"  class="form-control">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Номер паспорта</label>
+                            <input type="text"  class="form-control">
+                        </div>
+                    </div>
+
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Дата выдачи паспорта</label>
+                            <input type="text" class="form-control date">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Кем выдан паспорт</label>
+                            <input type="text"  class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" name="gender" type="checkbox">
+                                <label class="form-check-label">Собственник является водителем</label>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -157,17 +436,6 @@
     </div>
 </body>
 
-<script>
-    $(document).ready(function () {
-        var date_input = $('input[name="date"]'); //our date input has the name "date"
-        var options = {
-            format: 'dd.mm.yyyy',
-            todayHighlight: true,
-            orientation: "right",
-            autoclose: true
-        };
-        date_input.datepicker(options);
-    })
-</script>
+<script src="js/script.js"></script>
 
 </html>
