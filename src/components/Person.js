@@ -6,6 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale, setDefaultLocale } from "react-datepicker";
 import ru from 'date-fns/locale/ru'
 import InputMask from 'react-input-mask';
+import { connect } from 'react-redux'
 
 class Person extends React.Component {
     state =
@@ -20,11 +21,15 @@ class Person extends React.Component {
             }
         }
 
-    birthdayChanged = date =>{
+    birthdayChanged = date => {
         let p = this.state.person;
         p.birthday = date;
         this.setState({ person: p });
-    }    
+        this.props.dispatch({
+            type: "EDIT_PERSON",
+            data: { key: this.props.type == "driver" ? "driver" + this.props.number : this.props.type, person: p }
+        })
+    }
 
     onChangePassportDate = date => {
         this.setState({ passportDate: date });
@@ -40,11 +45,12 @@ class Person extends React.Component {
         return this.state.person;
     }
 
-    textChanged = (name, event) =>
-    {
-        let p = this.state.person;
-        p[name] = event.currentTarget.value;
-        this.setState({person: p});
+    textChanged = (name, event) => {
+        this.state.person[name] = event.currentTarget.value;
+        this.props.dispatch({
+            type: "EDIT_PERSON",
+            data: { key: this.props.type == "driver" ? "driver" + this.props.number : this.props.type, person: this.state.person }
+        })
     }
 
     render() {
@@ -62,7 +68,8 @@ class Person extends React.Component {
                         <div className="form-row">
                             <div className="form-group col-md-6">
                                 <label>Фамилия</label>
-                                <input type="text" onChange={this.textChanged.bind(this, "firstName")} value={this.state.person.firstName} className="form-control" />
+                                <input type="text" onChange={this.textChanged.bind(this, "firstName")}
+                                    value={this.props.persons.length} className="form-control" /> {console.log(this.props.persons)}
                             </div>
                             <div className="form-group col-md-6">
                                 <label>Имя</label>
@@ -73,17 +80,17 @@ class Person extends React.Component {
                         <div className="form-row">
                             <div className="form-group col-md-4">
                                 <label>Отчество</label>
-                                <input type="text" value={this.state.person.lastName} onChange={this.textChanged.bind(this, "lastName")}   className="form-control" />
+                                <input type="text" value={this.state.person.lastName} onChange={this.textChanged.bind(this, "lastName")} className="form-control" />
                             </div>
                             <div className="form-group col-md-2">
                                 <label>Дата рождения</label>
-                                <br/>
+                                <br />
                                 <DatePicker selected={this.state.person.birthday}
                                     onChange={this.birthdayChanged}
                                     dateFormat="dd.MM.yyyy"
                                     locale='ru'
                                     className='form-control' />
-                                
+
                             </div>
                             <div className="form-group col-md-4">
                                 <label>Пол</label>
@@ -193,4 +200,11 @@ class PhoneAndEmail extends React.Component {
     }
 }
 
-export default Person
+const mapStateToProps = state => {
+    console.log(state.persons);
+    return {
+        persons: state.persons
+    };
+};
+
+export default connect(mapStateToProps)(Person)

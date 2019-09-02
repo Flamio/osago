@@ -2,8 +2,15 @@ import React from 'react';
 import Vehicle from './components/Vehicle'
 import Title from './components/Title'
 import Person from './components/Person'
+import {connect} from 'react-redux'
 
 class App extends React.Component {
+
+  constructor(props)
+  {
+    super(props);
+    this.firstPerson = React.createRef();
+  }
 
   state = {
     drivers: [],
@@ -13,8 +20,13 @@ class App extends React.Component {
 
   ownerIsDriver = (event) => {
     if (event.target.checked) {
-      let person
-      this.setState({ drivers: [<Person type="driver" key='1' number='1' person={{name:"sadfsda"}}/>] })
+      this.setState({ drivers: [<Person ref={this.firstPerson} type="driver" number="1" key="1"/>] });
+      let p = this.firstPerson.current.getPerson();
+      console.log(p);
+      this.props.dispatch({
+        type : "FILL_FIRST_DRIVER",
+        data : {}
+      })
     }
   }
 
@@ -84,4 +96,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default connect()(App);
