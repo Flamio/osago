@@ -2,61 +2,58 @@ import React from 'react';
 import Vehicle from './components/Vehicle'
 import Title from './components/Title'
 import Person from './components/Person'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import Driver from './components/Driver'
 
 class App extends React.Component {
 
-  constructor(props)
-  {
+  constructor(props) {
     super(props);
   }
 
-  state = {
-    drivers: [],
-    unlimited: false,
-    ownerVisible: true,
-  }
-
   ownerIsDriver = (event) => {
-    if (event.target.checked) {
-      this.setState({ drivers: [<Driver driverChanged={this.driverChanged} driver={this.props.persons.drivers[1]} number="1"  key="1"/>] });
-      this.props.dispatch({
-        type : "FILL_FIRST_DRIVER",
-        data : {}
-      })
-    }
+    this.props.dispatch({
+      type: "OWNER_IS_DRIVER",
+      data: event.currentTarget.checked
+    })
   }
 
   insurantIsOwner = (event) => {
-    this.setState({ ownerVisible: !event.target.checked });
+    this.props.dispatch({
+      type: "INSURANT_IS_OWNER",
+      data: event.currentTarget.checked
+    })
   }
 
   unlimitedDrivers = (event) => {
-    if (event.target.checked)
-      this.setState({ drivers: [], unlimited: true });
-    else
-      this.setState({ unlimited: false });
+    this.props.dispatch({
+      type: "UNLIMITED_DRIVERS",
+      data: event.currentTarget.checked
+    })
   }
 
-  driverChanged = (driver) =>
-  {
+  driverChanged = (driver) => {
     this.props.dispatch({
-      type : "DRIVER_CHANGED",
-      data : driver
+      type: "DRIVER_CHANGED",
+      data: driver
     })
-
-    this.setState({drivers:this.state.drivers})
   }
 
   changeDriversCount = (event) => {
-    let d = [];
-    console.log(this.props.persons);
-    for (let i = 1; i <= event.target.value; i++)
-      d.push(<Driver driverChanged={this.driverChanged} driver={this.props.persons.drivers[i]} number={i} key={i}/>)
-
-    this.setState({ drivers: d, unlimited: false });
+    this.props.dispatch({
+      type: "DRIVER_COUNT_CHANGE",
+      data: event.currentTarget.value
+    })
   }
+
+  getList = () => {
+    var rows = [];
+    for (var i = 0; i < this.props.store.drivers.length; i++) {
+      rows.push(<Driver driverChanged={this.driverChanged} driver={this.props.store.drivers[i]} number={i} key={i} />);
+    }
+    return rows;
+  }
+
 
   render() {
     return (
@@ -75,17 +72,19 @@ class App extends React.Component {
                 Страхователь является собственником
               </div>
             </div>
-            {this.state.ownerVisible && <div> <Person type="owner" /> <br /> </div>}
+            {!this.props.store.insurantIsOwner  &&
+              <Person type="owner" />}
+            <br />
 
             <div className="form-group">
               <div className="form-check form-check-inline">
-                <input className="form-check-input" onChange={this.ownerIsDriver} type="checkbox" />
+                <input className="form-check-input" checked={this.props.store.ownerIsDriver} onChange={this.ownerIsDriver} type="checkbox" />
                 Собственник является водителем
                 </div>
             </div>
 
             <br />
-            <select onChange={this.changeDriversCount} value={this.state.drivers.length} defaultValue="0" className="custom-select col-md-6">
+            <select onChange={this.changeDriversCount} value={this.props.store.drivers.length} defaultValue="0" className="custom-select col-md-6">
               <option value='0'>Количество водителей</option>
               <option value='1'>1 водитель</option>
               <option value='2'>2 водителя</option>
@@ -93,10 +92,10 @@ class App extends React.Component {
               <option value='4'>4 водителя</option>
             </select>
             <div className="form-check form-check-inline" style={{ margin: '5px' }}>
-              <input className="form-check-input" checked={this.state.unlimited} type="checkbox" onChange={this.unlimitedDrivers} />
+              <input className="form-check-input" checked={this.props.store.unlimitedDrivers} type="checkbox" onChange={this.unlimitedDrivers} />
               <label className="form-check-label">Количество водителей без ограничений</label>
             </div>
-            <Driver driverChanged={this.driverChanged} driver={this.props.persons.drivers[0]} number={0} key={0}/>
+            {this.getList()}
           </form>
         </div>
         <br />
@@ -109,8 +108,7 @@ class App extends React.Component {
 const mapStateToProps = state => {
   console.log(state);
   return {
-
-      persons: state
+    store: state
   };
 };
 

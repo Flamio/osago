@@ -122,7 +122,7 @@ class PhoneAndEmail extends React.Component {
                 <div className="form-group col-md-6">
                     <label>Телефон</label>
                     <br></br>
-                    <InputMask mask="+7 (999) 999-99-99" maskChar=" " />
+                    <InputMask mask="+7 (999) 999-99-99" maskChar=" " className="form-control" />
                 </div>
                 <div className="form-group col-md-6">
                     <label>Электронная почта</label>

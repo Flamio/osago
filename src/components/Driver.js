@@ -19,7 +19,7 @@ class Driver extends React.Component {
                 <br />
                 <div className="card">
                     <div className="card-header">
-                       <h2> Водитель {this.props.number} </h2>
+                       <h2> Водитель {Number(this.props.number) + 1} </h2>
                     </div>
                     <div className="card-body">
                         <PersonFio personChanged={this.personChanged}  person={this.props.driver} /> {console.log(this.props.driver)}
