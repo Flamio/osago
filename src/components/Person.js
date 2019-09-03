@@ -7,49 +7,22 @@ import { registerLocale, setDefaultLocale } from "react-datepicker";
 import ru from 'date-fns/locale/ru'
 import InputMask from 'react-input-mask';
 import { connect } from 'react-redux'
+import PersonFio from './PersonFio'
 
 class Person extends React.Component {
-    state =
+    data =
         {
             passportDate: "",
-            person: {
-                firstName: "",
-                name: "",
-                lastName: "",
-                birthday: "",
-                gender: ""
-            }
         }
 
-    birthdayChanged = date => {
-        let p = this.state.person;
-        p.birthday = date;
-        this.setState({ person: p });
-        this.props.dispatch({
-            type: "EDIT_PERSON",
-            data: { key: this.props.type == "driver" ? "driver" + this.props.number : this.props.type, person: p }
-        })
-    }
-
     onChangePassportDate = date => {
-        this.setState({ passportDate: date });
+        this.data.passportDate = date;
     }
 
-    changeGender = event => {
-        let p = this.state.person;
-        p.gender = event.currentTarget.value;
-        this.setState({ person: p });
-    }
-
-    getPerson = () => {
-        return this.state.person;
-    }
-
-    textChanged = (name, event) => {
-        this.state.person[name] = event.currentTarget.value;
+    personChanged = p => {
         this.props.dispatch({
             type: "EDIT_PERSON",
-            data: { key: this.props.type == "driver" ? "driver" + this.props.number : this.props.type, person: this.state.person }
+            data: { key: this.props.type, person: p }
         })
     }
 
@@ -61,50 +34,10 @@ class Person extends React.Component {
                     <div className="card-header">
                         {this.props.type === "insurant" && <h2> Страхователь </h2>}
                         {this.props.type === "owner" && <h2> Собственник </h2>}
-                        {this.props.type === "driver" && <h2> Водитель {this.props.number} </h2>}
                     </div>
                     <div className="card-body">
 
-                        <div className="form-row">
-                            <div className="form-group col-md-6">
-                                <label>Фамилия</label>
-                                <input type="text" onChange={this.textChanged.bind(this, "firstName")}
-                                    value={this.props.persons.length} className="form-control" /> {console.log(this.props.persons)}
-                            </div>
-                            <div className="form-group col-md-6">
-                                <label>Имя</label>
-                                <input type="text" value={this.state.person.name} onChange={this.textChanged.bind(this, "name")} className="form-control" />
-                            </div>
-                        </div>
-
-                        <div className="form-row">
-                            <div className="form-group col-md-4">
-                                <label>Отчество</label>
-                                <input type="text" value={this.state.person.lastName} onChange={this.textChanged.bind(this, "lastName")} className="form-control" />
-                            </div>
-                            <div className="form-group col-md-2">
-                                <label>Дата рождения</label>
-                                <br />
-                                <DatePicker selected={this.state.person.birthday}
-                                    onChange={this.birthdayChanged}
-                                    dateFormat="dd.MM.yyyy"
-                                    locale='ru'
-                                    className='form-control' />
-
-                            </div>
-                            <div className="form-group col-md-4">
-                                <label>Пол</label>
-                                <br />
-                                <div className="form-check form-check-inline">
-                                    <input value="male" checked={this.state.person.gender == "male"} onChange={this.changeGender} className="form-check-input" type="radio" />
-                                    <label className="form-check-label">Муж</label>
-                                </div>
-                                <div className="form-check form-check-inline">
-                                    <input value="female" checked={this.state.person.gender == "female"} onChange={this.changeGender} className="form-check-input" type="radio" />
-                                    <label className="form-check-label">Жен</label>
-                                </div>
-                            </div>
-                        </div>
+                        <PersonFio person={this.props.persons[this.props.type]} personChanged={this.personChanged} />
 
                         <div className="form-row">
                             <div className="form-group col-md-6">
@@ -163,7 +96,7 @@ class Person extends React.Component {
                             <div className="form-group col-md-6">
                                 <label>Дата выдачи паспорта</label>
                                 <br />
-                                <DatePicker selected={this.state.passportDate}
+                                <DatePicker selected={this.data.passportDate}
                                     onChange={this.onChangePassportDate}
                                     dateFormat="dd.MM.yyyy"
                                     locale='ru'
@@ -201,9 +134,8 @@ class PhoneAndEmail extends React.Component {
 }
 
 const mapStateToProps = state => {
-    console.log(state.persons);
     return {
-        persons: state.persons
+        persons: state
     };
 };
 

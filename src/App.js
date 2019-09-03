@@ -3,13 +3,13 @@ import Vehicle from './components/Vehicle'
 import Title from './components/Title'
 import Person from './components/Person'
 import {connect} from 'react-redux'
+import Driver from './components/Driver'
 
 class App extends React.Component {
 
   constructor(props)
   {
     super(props);
-    this.firstPerson = React.createRef();
   }
 
   state = {
@@ -20,9 +20,7 @@ class App extends React.Component {
 
   ownerIsDriver = (event) => {
     if (event.target.checked) {
-      this.setState({ drivers: [<Person ref={this.firstPerson} type="driver" number="1" key="1"/>] });
-      let p = this.firstPerson.current.getPerson();
-      console.log(p);
+      this.setState({ drivers: [<Driver driverChanged={this.driverChanged} driver={this.props.persons.drivers[1]} number="1"  key="1"/>] });
       this.props.dispatch({
         type : "FILL_FIRST_DRIVER",
         data : {}
@@ -41,10 +39,21 @@ class App extends React.Component {
       this.setState({ unlimited: false });
   }
 
+  driverChanged = (driver) =>
+  {
+    this.props.dispatch({
+      type : "DRIVER_CHANGED",
+      data : driver
+    })
+
+    this.setState({drivers:this.state.drivers})
+  }
+
   changeDriversCount = (event) => {
     let d = [];
+    console.log(this.props.persons);
     for (let i = 1; i <= event.target.value; i++)
-      d.push(<Person type="driver" number={i} key={i} />)
+      d.push(<Driver driverChanged={this.driverChanged} driver={this.props.persons.drivers[i]} number={i} key={i}/>)
 
     this.setState({ drivers: d, unlimited: false });
   }
@@ -87,7 +96,7 @@ class App extends React.Component {
               <input className="form-check-input" checked={this.state.unlimited} type="checkbox" onChange={this.unlimitedDrivers} />
               <label className="form-check-label">Количество водителей без ограничений</label>
             </div>
-            {this.state.drivers}
+            <Driver driverChanged={this.driverChanged} driver={this.props.persons.drivers[0]} number={0} key={0}/>
           </form>
         </div>
         <br />
@@ -96,4 +105,13 @@ class App extends React.Component {
   }
 }
 
-export default connect()(App);
+
+const mapStateToProps = state => {
+  console.log(state);
+  return {
+
+      persons: state
+  };
+};
+
+export default connect(mapStateToProps)(App);
