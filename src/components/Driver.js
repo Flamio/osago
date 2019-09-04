@@ -8,6 +8,7 @@ class Driver extends React.Component {
     }
     personChanged = (person) =>
     {
+        this.driver = {}
         this.driver.person = person;
         this.driver.number = this.props.number;
         this.props.driverChanged(this.driver);
