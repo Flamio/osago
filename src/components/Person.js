@@ -8,15 +8,18 @@ import ru from 'date-fns/locale/ru'
 import InputMask from 'react-input-mask';
 import { connect } from 'react-redux'
 import PersonFio from './PersonFio'
+import AutoSuggest from 'react-autosuggest'
 
 class Person extends React.Component {
     state =
         {
             passportDate: "",
+            town: "",
+            towns: []
         }
 
     onChangePassportDate = date => {
-        this.setState( {passportDate: date})
+        this.setState({ passportDate: date })
     }
 
     personChanged = p => {
@@ -24,6 +27,20 @@ class Person extends React.Component {
             type: "EDIT_PERSON",
             data: { key: this.props.type, person: p }
         })
+    }
+
+    onTownChange = (event, { newValue }) => {
+        this.setState({
+            town: newValue
+        });
+    };
+
+    postData = (url = '', data = {}) => {
+        return fetch(url, {
+            method: 'POST',
+            body: JSON.stringify(data),
+        }).then(response => response.json()
+        );
     }
 
     render() {
@@ -42,7 +59,27 @@ class Person extends React.Component {
                         <div className="form-row">
                             <div className="form-group col-md-6">
                                 <label>Город постоянной регистрации</label>
-                                <input type="text" className="form-control" />
+                                <br />
+                                <AutoSuggest
+
+                                    suggestions={this.state.towns}
+
+                                    onSuggestionsFetchRequested={value => {
+                                        this.postData('server/', { input: value.value }).then(r => this.setState({towns:r.data}));
+                                    }}
+
+                                    getSuggestionValue={suggestion => suggestion.name}
+                                    renderSuggestion={suggestion => (
+                                        <li className="list-group-item">
+                                            {suggestion.name}
+                                        </li>
+                                    )}
+                                    inputProps={{
+                                        placeholder: 'Type a programming language',
+                                        value: this.state.town,
+                                        onChange: this.onTownChange
+                                    }}
+                                />
                             </div>
                             <div className="form-group col-md-6">
                                 <label>Улица</label>
@@ -77,7 +114,7 @@ class Person extends React.Component {
 
 
                         <div className="form-row">
-                            <div className="form-group col-md-6">
+                            <div className="form-group col-md-3">
                                 <label>Номер квартиры</label>
                                 <input type="text" className="form-control" />
                             </div>
@@ -89,11 +126,7 @@ class Person extends React.Component {
                                 <label>Номер паспорта</label>
                                 <input type="text" className="form-control" />
                             </div>
-                        </div>
-
-
-                        <div className="form-row">
-                            <div className="form-group col-md-6">
+                            <div className="form-group col-md-3">
                                 <label>Дата выдачи паспорта</label>
                                 <br />
                                 <DatePicker selected={this.state.passportDate}
@@ -102,7 +135,12 @@ class Person extends React.Component {
                                     locale='ru'
                                     className='form-control' />
                             </div>
-                            <div className="form-group col-md-6">
+                        </div>
+
+
+                        <div className="form-row">
+
+                            <div className="form-group col-md-12">
                                 <label>Кем выдан паспорт</label>
                                 <input type="text" className="form-control" />
                             </div>

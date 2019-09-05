@@ -55,6 +55,11 @@ class App extends React.Component {
     return rows;
   }
 
+  onFormSubmit = event => {
+    event.preventDefault();
+    console.log(this.props.store);
+  }
+
 
 
 
@@ -63,7 +68,7 @@ class App extends React.Component {
       <div>
         <Title />
         <div className="container">
-          <form className="form" onSubmit={this.onSubmit}>
+          <form className="form" onSubmit={this.onFormSubmit}>
             <br />
             <br />
             <Vehicle />
@@ -71,7 +76,7 @@ class App extends React.Component {
             <br />
             <div className="form-group">
               <div className="form-check form-check-inline">
-                <input className="form-check-input" onChange={this.insurantIsOwner} type="checkbox" />
+                <input className="form-check-input" onChange={this.insurantIsOwner} name="owner1" type="checkbox" />
                 Страхователь является собственником
               </div>
             </div>
@@ -100,10 +105,10 @@ class App extends React.Component {
             </div>
             {this.getList()}
             <Policy />
+            <br />
+            <br />
+            <input type="submit" className='btn btn-success col-md-12' value="Оформить заявку" />
           </form>
-          <br />
-          <br />
-          <input type="submit" className='btn btn-success col-md-12' value="Оформить заявку" />
         </div>
         <br />
       </div >
