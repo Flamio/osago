@@ -4,6 +4,7 @@ import Title from './components/Title'
 import Person from './components/Person'
 import { connect } from 'react-redux'
 import Driver from './components/Driver'
+import Policy from './components/Policy'
 
 class App extends React.Component {
 
@@ -55,12 +56,14 @@ class App extends React.Component {
   }
 
 
+
+
   render() {
     return (
       <div>
         <Title />
         <div className="container">
-          <form className="form">
+          <form className="form" onSubmit={this.onSubmit}>
             <br />
             <br />
             <Vehicle />
@@ -72,7 +75,7 @@ class App extends React.Component {
                 Страхователь является собственником
               </div>
             </div>
-            {!this.props.store.insurantIsOwner  &&
+            {!this.props.store.insurantIsOwner &&
               <Person type="owner" />}
             <br />
 
@@ -96,7 +99,11 @@ class App extends React.Component {
               <label className="form-check-label">Количество водителей без ограничений</label>
             </div>
             {this.getList()}
+            <Policy />
           </form>
+          <br />
+          <br />
+          <input type="submit" className='btn btn-success col-md-12' value="Оформить заявку" />
         </div>
         <br />
       </div >
