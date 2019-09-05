@@ -10,13 +10,13 @@ import { connect } from 'react-redux'
 import PersonFio from './PersonFio'
 
 class Person extends React.Component {
-    data =
+    state =
         {
             passportDate: "",
         }
 
     onChangePassportDate = date => {
-        this.data.passportDate = date;
+        this.setState( {passportDate: date})
     }
 
     personChanged = p => {
@@ -96,7 +96,7 @@ class Person extends React.Component {
                             <div className="form-group col-md-6">
                                 <label>Дата выдачи паспорта</label>
                                 <br />
-                                <DatePicker selected={this.data.passportDate}
+                                <DatePicker selected={this.state.passportDate}
                                     onChange={this.onChangePassportDate}
                                     dateFormat="dd.MM.yyyy"
                                     locale='ru'

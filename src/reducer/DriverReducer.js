@@ -64,7 +64,8 @@ const DriverReducer = (state = initState, action) => {
             return {
                 ...state,
                 drivers: action.data ? oneDriver : state.drivers.slice(),
-                ownerIsDriver: action.data
+                ownerIsDriver: action.data,
+                unlimitedDrivers: action.data ? false : state.unlimitedDrivers
             }
         default:
             return state;
