@@ -15,6 +15,7 @@ class Person extends React.Component {
         {
             passportDate: "",
             town: "",
+            townKladr: "",
             towns: []
         }
 
@@ -30,8 +31,10 @@ class Person extends React.Component {
     }
 
     onTownChange = (event, { newValue }) => {
+        let town = this.state.towns.find(t => t.name == newValue);
         this.setState({
-            town: newValue
+            town: newValue,
+            kladrTown: town ? town.id : 0
         });
     };
 
@@ -60,22 +63,21 @@ class Person extends React.Component {
                             <div className="form-group col-md-6">
                                 <label>Город постоянной регистрации</label>
                                 <br />
-                                <AutoSuggest
+                                <AutoSuggest className="form-control"
 
                                     suggestions={this.state.towns}
 
                                     onSuggestionsFetchRequested={value => {
-                                        this.postData('server/', { input: value.value }).then(r => this.setState({towns:r.data}));
+                                        this.postData('/api/kladr/', { input: value.value }).then(r => { this.setState({ towns: r.suggestions }); console.log(r) });
                                     }}
 
-                                    getSuggestionValue={suggestion => suggestion.name}
-                                    renderSuggestion={suggestion => (
-                                        <li className="list-group-item">
-                                            {suggestion.name}
-                                        </li>
+                                    getSuggestionValue={suggestion => suggestion.value}
+                                    renderSuggestion={(suggestion, h) => (
+                                        <div className="list-group-item">
+                                            {suggestion.value}
+                                        </div>
                                     )}
                                     inputProps={{
-                                        placeholder: 'Type a programming language',
                                         value: this.state.town,
                                         onChange: this.onTownChange
                                     }}

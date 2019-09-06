@@ -2,6 +2,7 @@
   "name": "osago",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost",
   "dependencies": {
     "bootstrap": "^4.3.1",
     "jquery": "^3.4.1",
