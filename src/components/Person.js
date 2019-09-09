@@ -68,13 +68,13 @@ class Person extends React.Component {
                                     suggestions={this.state.towns}
 
                                     onSuggestionsFetchRequested={value => {
-                                        this.postData('/api/kladr/', { input: value.value }).then(r => { this.setState({ towns: r.suggestions }); console.log(r) });
+                                        this.postData('/api/kladr/', { input: value.value }).then(r => { this.setState({ towns: r.data }); console.log(r) });
                                     }}
 
-                                    getSuggestionValue={suggestion => suggestion.value}
+                                    getSuggestionValue={suggestion => suggestion.name}
                                     renderSuggestion={(suggestion, h) => (
                                         <div className="list-group-item">
-                                            {suggestion.value}
+                                            {suggestion.name}
                                         </div>
                                     )}
                                     inputProps={{
